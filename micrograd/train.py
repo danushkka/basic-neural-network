@@ -1,4 +1,3 @@
-from micrograd.engine import Value
 from micrograd.nn import MLP
 from micrograd.viz import plot_loss
 
