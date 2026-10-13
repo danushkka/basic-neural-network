@@ -1,0 +1,28 @@
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Python bytecode / cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.pytest_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Generated data / model weights
+data/
+*.pt
+*.pth
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Generated graph outputs
+micrograd/graphs/*
+!micrograd/graphs/.gitkeep
