@@ -27,5 +27,8 @@ Thumbs.db
 micrograd/graphs/*
 !micrograd/graphs/.gitkeep
 
+makemore/graphs/*
+!makemore/graphs/.gitkeep
+
 # Any stray graphviz outputs
 *.svg
