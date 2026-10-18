@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 from mlp.data import build_vocab, load_data, make_splits
+from mlp.logging_utils import log_experiment
 from mlp.mlp import forward, init_params, save_params
 
 
@@ -29,20 +30,40 @@ def train(params, Xtr, Ytr, steps=200_000, batch=32, seed=42):
 
 def main():
     words = load_data()
-    stoi, _itos = build_vocab(words)
+    stoi, itos = build_vocab(words)
     V = len(stoi)
-    (Xtr, Ytr), (Xdev, _Ydev), _ = make_splits(stoi)
+    (Xtr, Ytr), (Xdev, Ydev), _ = make_splits(stoi)
 
-    print(f"Vocab: {V}, Train: {len(Xtr)}, Val: {len(Xdev)}")
+    # Initialize the config with all hyperparams
+    config = {
+        "block": 3,
+        "emb": 4,
+        "hidden": 300,
+        "lr": 0.05,
+        "steps": 200_000,
+    }
 
-    params = init_params(V)
-    print(f"Params: {sum(p.nelement() for p in params)}")
+    print(f"Config: {config}")
 
-    print("\nTraining...")
-    final_loss = train(params, Xtr, Ytr)
-    print(f"Train batch loss: {final_loss:.4f}")
+    params = init_params(
+        V,
+        hidden=config["hidden"],
+        emb_dim=config["emb"],
+    )
 
+    print("Training...")
+    train(params, Xtr, Ytr, steps=config["steps"])
+
+    # Claculate the losses
+    with torch.no_grad():
+        train_loss = F.cross_entropy(forward(params, Xtr), Ytr).item()
+        val_loss = F.cross_entropy(forward(params, Xdev), Ydev).item()
+
+    print(f"Train: {train_loss:.4f}   Val: {val_loss:.4f}")
+
+    # Save the model and log the experiment
     save_params(params)
+    log_experiment(config, train_loss, val_loss)
 
 
 if __name__ == "__main__":

@@ -32,3 +32,7 @@ makemore/graphs/*
 
 # Any stray graphviz outputs
 *.svg
+
+# Experiments logs
+makemore/experiments.csv
+makemore/experiments.md
