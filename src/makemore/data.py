@@ -3,7 +3,7 @@ import random
 import torch
 
 
-def load_data(path="../makemore/data/names.txt"):
+def load_data(path="src/data/names.txt"):
     with open(path) as f:
         return f.read().splitlines()
 
@@ -17,7 +17,8 @@ def build_vocab(words):
     return stoi, itos
 
 
-def build_dataset(words, stoi, block_size=4):
+def build_dataset(words, stoi, block_size=3):
+
     X, Y = [], []  # X == context, Y == expected prediction
     for w in words:
         context = [0] * block_size  # set initial context as "..."
@@ -30,13 +31,13 @@ def build_dataset(words, stoi, block_size=4):
     return torch.tensor(X), torch.tensor(Y)
 
 
-def make_splits(stoi, seed=42):
+def make_splits(stoi, block_size=3, seed=42):
     words = load_data()
     random.seed(42)
     random.shuffle(words)
     n1, n2 = int(0.8 * len(words)), int(0.9 * len(words))
-    Xtr, Ytr = build_dataset(words[:n1], stoi)  # first 80%
-    Xdev, Ydev = build_dataset(words[n1:n2], stoi)  # 10% (between 80% and 90%)
-    Xtest, Ytest = build_dataset(words[n2:], stoi)  # last 10%
+    Xtr, Ytr = build_dataset(words[:n1], stoi, block_size)  # first 80%
+    Xdev, Ydev = build_dataset(words[n1:n2], stoi, block_size)  # 10% (between 80% and 90%)
+    Xtest, Ytest = build_dataset(words[n2:], stoi, block_size)  # last 10%
 
     return (Xtr, Ytr), (Xdev, Ydev), (Xtest, Ytest)
