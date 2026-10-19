@@ -16,6 +16,8 @@ __pycache__/
 
 # Generated data / model weights
 data/
+src/data
+src/makemore/checkpoints
 *.pt
 *.pth
 
@@ -35,4 +37,3 @@ makemore/graphs/*
 
 # Experiments logs
 makemore/experiments.csv
-makemore/experiments.md
