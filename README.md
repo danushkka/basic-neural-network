@@ -108,7 +108,7 @@ pip install torch matplotlib
 
 ### Run the GPT Model
 ```bash
-python -m src.gpt.v2
+python -m src.gpt.gpt
 ```
 
 ## ⚙️ Hyperparameters (Current Config)
